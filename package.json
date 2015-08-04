@@ -1,0 +1,24 @@
+{
+  "name": "wherehouse",
+  "version": "0.0.1",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.0.0",
+    "compression": "~1.4.3",
+    "express": "~4.0.0",
+    "method-override": "~1.0.0",
+    "turf": "^2.0.2"
+  },
+  "engines": {
+    "node": "0.12.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/niranjanbala/wherehouse"
+  },
+  "author": "niranjanbala",
+  "license": "MIT"
+}
