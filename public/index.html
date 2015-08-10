@@ -160,8 +160,10 @@
                 fillOpacity: 0.3
               }); 
             google.maps.event.addListener(polygon, 'mousemove', function(event){
-                infoWindow.setPosition(event.latLng);
-                infoWindow.open(map);
+                if(selectedCityIndex>=0)
+                    infoWindow.setPosition(event.latLng);
+                    infoWindow.open(map);
+                }
             });
           }          
           polygon.setPath(paths);
