@@ -160,7 +160,7 @@
                 fillOpacity: 0.3
               }); 
             google.maps.event.addListener(polygon, 'mousemove', function(event){
-                if(selectedCityIndex>=0)
+                if(selectedCityIndex>=0) {
                     infoWindow.setPosition(event.latLng);
                     infoWindow.open(map);
                 }
