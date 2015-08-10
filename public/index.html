@@ -27,16 +27,58 @@
     <script type="text/javascript" src="js/jquery.spinner.min.js"></script>
     <script>
         var locations=[];
+        var cityListSelected=[];
         var polygon;
+        var selectedCityIndex=-1;
+        var cityList=[{
+            name: 'Bengaluru',
+            cfCityName: "Bangalore"
+        },{
+            name: 'Chennai',
+            cfCityName: "Chennai"
+        },{
+            name: 'Pune',
+            cfCityName: "Pune"
+        },{
+            name: 'Mumbai',
+            cfCityName: "Mumbai"
+        },{
+            name: 'Hyderabad',
+            cfCityName: "Hyderabad"
+        }
+        ];   
+        var infoWindow = new google.maps.InfoWindow({
+            content: "<a href='#'' id='test' onclick='testClick()''>Click to see properties.</a>"
+        });     
+        function testClick(){
+            var url="https://www.commonfloor.com/listing-search?search_intent=rent&page=1&city="+cityList[selectedCityIndex].cfCityName+
+            "&use_pp=1&set_pp=1&fetch_max=1&number_of_children=2&page_size=20&polygon=1&mapBounds=";
+            var ne=polygon.getBounds().getNorthEast();
+            var sw=polygon.getBounds().getSouthWest();
+            url+=sw.lat()+","+sw.lng()+","+ne.lat()+","+ne.lng();
+            window.open(url);
+        }
+        function findCity(address){            
+            var index=-1;
+            cityList.forEach(function(city, ci){
+                if(address.indexOf(city.name)>0) {
+                    index=ci;
+                }
+            });
+            return index;
+        }
         function setAutoCompleteListener(autocomplete, index){
             google.maps.event.addListener(autocomplete, 'place_changed', function() {
-                var place = autocomplete.getPlace();
+                var place = autocomplete.getPlace();                
                 if (!place.geometry) {
                     locations[index]=null;
+                    cityListSelected[index]=null;
                     window.alert("Autocomplete's returned place contains no geometry");
                     return;
                 }
+                var cityIndex=findCity(place.formatted_address);
                 locations[index]=place.geometry.location;
+                cityListSelected[index]=cityIndex;
             });
         }
         function initialize() {
@@ -50,6 +92,7 @@
             var map = new google.maps.Map($('#map-canvas')[0], mapOptions);
             $('.controls.pac-input').each(function(index){
                 locations.push(null);
+                cityListSelected.push(null);
                 var autoOptions = {
                     types: ["geocode"]
                 };
@@ -62,13 +105,17 @@
                  return { distance: $(this).val()};
                 }).get();                
                 locations.forEach(function(item, index){
-                    if(item)
+                    if(item) {                        
                         params[index].location={lat:item.lat(), lng:item.lng()};
+                        params[index].cityIndex=cityListSelected[index]
+                    }
                 });    
                 var skipNullLocations=function(obj){
                     return obj.location!=null;
                 }
                 var filtered=params.filter(skipNullLocations);
+                if(filtered.length==0) {return;}
+                selectedCityIndex=filtered[0].cityIndex;
                 ga('send', '_trackEvent','Where_House', 'click', JSON.stringify(filtered));
                 $.post( "/process", { params: filtered})
                   .done(function( data ) {
@@ -83,6 +130,7 @@
                     } else {
                         alert("Sorry! you are a hard person to satisfy :)");
                         if(polygon) {
+                            infoWindow.setMap(null);
                             polygon.setMap(null);
                         }
                     }
@@ -102,18 +150,22 @@
           geometry.getArray()[0].getArray().forEach(function(g) {
             paths.push(new google.maps.LatLng(g.lng(), g.lat()));
           });
-          if(!polygon)
-          polygon=new google.maps.Polygon({
-            map: map,
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.3
-          });
+          if(!polygon) {
+              polygon=new google.maps.Polygon({
+                map: map,
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#FF0000',
+                fillOpacity: 0.3
+              }); 
+            google.maps.event.addListener(polygon, 'mousemove', function(event){
+                infoWindow.setPosition(event.latLng);
+                infoWindow.open(map);
+            });
+          }          
           polygon.setPath(paths);
-          polygon.setMap(map);
-          console.log(polygon.getBounds());
+          polygon.setMap(map);          
           map.fitBounds(polygon.getBounds());
         }
         google.maps.event.addDomListener(window, 'load', initialize);
