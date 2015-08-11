@@ -73,12 +73,17 @@
             url+=sw.lat()+","+sw.lng()+","+ne.lat()+","+ne.lng();
             window.open(url);
         }
-        function findCity(address){            
+        function findCity(place){            
             var index=-1;
             cityList.forEach(function(city, ci){
-                if(address.indexOf(city.name)>=0) {
+                if(place.formatted_address.indexOf(city.name)>=0) {
                     index=ci;
-                }
+                }                
+            });
+            cityList.forEach(function(city, ci){
+                if(place.name.indexOf(city.name)>=0) {
+                    index=ci;
+                }                
             });
             return index;
         }
@@ -91,7 +96,7 @@
                     window.alert("Autocomplete's returned place contains no geometry");
                     return;
                 }
-                var cityIndex=findCity(place.formatted_address);
+                var cityIndex=findCity(place);
                 locations[index]=place.geometry.location;
                 cityListSelected[index]=cityIndex;
             });
