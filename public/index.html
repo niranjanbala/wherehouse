@@ -76,7 +76,7 @@
         function findCity(address){            
             var index=-1;
             cityList.forEach(function(city, ci){
-                if(address.indexOf(city.name)>0) {
+                if(address.indexOf(city.name)>=0) {
                     index=ci;
                 }
             });
