@@ -22,7 +22,7 @@ var solrApi={
 		    "srtby": "bestquality",
 		    "page_size": 20
 			};
-			return getRequestParam;
+			return requestParam;
 	},
 	getJsonData: function (options, callback) {
 		var dataString = JSON.stringify(this.getRequestParam(options));
