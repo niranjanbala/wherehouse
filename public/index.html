@@ -133,7 +133,10 @@
                 var autoOptions = {
                     types: ["geocode"]
                 };
-                var autocomplete = new google.maps.places.Autocomplete($(this)[0]);
+                var options = {            
+                    componentRestrictions: {country: 'in'}
+                };
+                var autocomplete = new google.maps.places.Autocomplete($(this)[0],options);
                 setAutoCompleteListener(autocomplete, index);
             });
             $('.pure-button').click(function(){
