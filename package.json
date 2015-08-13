@@ -9,6 +9,7 @@
     "body-parser": "~1.0.0",
     "compression": "~1.4.3",
     "express": "~4.0.0",
+    "md5": "^2.0.0",
     "method-override": "~1.0.0",
     "turf": "^2.0.2"
   },

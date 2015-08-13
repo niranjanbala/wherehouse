@@ -21,12 +21,13 @@
     <!--[if lt IE 9]>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
         <![endif]-->
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=places"></script>
+    <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?v=3.13&libraries=places,geometry,visualization&sensor=true&language=en"></script>
     <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
 
     <script type="text/javascript" src="js/jquery.spinner.min.js"></script>
     <script>
         var locations=[];
+        var CF_RESULT;
         var cityListSelected=[];
         var polygon;
         var selectedCityIndex=-1;
@@ -66,12 +67,27 @@
             content: "<a href='#'' id='test' onclick='testClick()''>Click to see properties.</a>"
         });     
         function testClick(){
-            var url="https://www.commonfloor.com/listing-search?search_intent=rent&page=1&city="+cityList[selectedCityIndex].cfCityName+
-            "&use_pp=1&set_pp=1&fetch_max=1&number_of_children=2&page_size=20&polygon=1&mapBounds=";
+            var url="https://www.commonfloor.com/listing-search?search_intent=rent&min_inr=5000&max_inr=25000&bed_rooms=1,2&page=1&city="+cityList[selectedCityIndex].cfCityName+
+            "&use_pp=0&set_pp=0&fetch_max=1&number_of_children=2&page_size=20&polygon=1&mapBounds=";
             var ne=polygon.getBounds().getNorthEast();
             var sw=polygon.getBounds().getSouthWest();
             url+=sw.lat()+","+sw.lng()+","+ne.lat()+","+ne.lng();
+            if(CF_RESULT){                
+                var nameArray = Object.keys(CF_RESULT).map(function(k){return CF_RESULT[k].name});
+                var idArray = Object.keys(CF_RESULT).map(function(k){return CF_RESULT[k].id});
+                url+="&prop_name="+nameArray.join(",");
+                url+="&property_location_filter="+idArray.join(",");
+            }
             window.open(url);
+        }
+        function compare(a,b) {
+                    if(a.count==b.count)
+                        return 0;
+                    else if(a.count>b.count){
+                        return -1;
+                    } else {
+                        return 1;
+                    }
         }
         function findCity(place){            
             var index=-1;
@@ -110,6 +126,7 @@
                 maxZoom:16
             };
             var map = new google.maps.Map($('#map-canvas')[0], mapOptions);
+            //var d=google.maps.geometry.spherical.computeDistanceBetween(new google.maps.LatLng(12, 77), new google.maps.LatLng(12, 77.02));
             $('.controls.pac-input').each(function(index){
                 locations.push(null);
                 cityListSelected.push(null);
@@ -136,11 +153,11 @@
                 var filtered=params.filter(skipNullLocations);
                 if(filtered.length==0) {return;}
                 selectedCityIndex=filtered[0].cityIndex;
-                ga('send', '_trackEvent','Where_House', 'click', JSON.stringify(filtered));
+                ga('send', '_trackEvent','Where_House', 'click', JSON.stringify(filtered));                
                 $.post( "/process", { params: filtered})
                   .done(function( data ) {
                     if(data){
-                        var features=map.data.addGeoJson(data);
+                        var features=map.data.addGeoJson(data);                        
                         map.data.forEach(function(feature) {
                             processPoints(map, feature.getGeometry());
                         });
@@ -188,7 +205,42 @@
           }          
           polygon.setPath(paths);
           polygon.setMap(map);          
-          map.fitBounds(polygon.getBounds());
+          var bounds=polygon.getBounds();
+          var ne=bounds.getNorthEast();
+          var sw=bounds.getSouthWest();
+          var cityName=cityList[selectedCityIndex].cfCityName;
+          $.post( "/location", { 
+            cityName: cityName,
+            lat1:sw.lat(),
+            lng1:sw.lng(),
+            lat2:ne.lat(),
+            lng2:ne.lng()
+          }).done(function( data ) {
+            var obj={};
+            if(data.status=="success"){
+                var totalResults=data.result_count;
+                data.data.forEach(function(item){
+                    if(item.children && item.children.length>0){                        
+                        var name= item.children[0].listing_area;
+                        var id= item.children[0].listing_area_id;
+                        if(!obj["area_"+id]) {
+                            obj["area_"+id]={
+                                id: "area_"+id,
+                                name:name, 
+                                count:1
+                            };
+                        }
+                        else{
+                            obj["area_"+id].count=obj["area_"+id].count+1;
+                        }
+                    }                    
+                })                
+                var dataArray = Object.keys(obj).map(function(k){return obj[k]});
+                dataArray.sort(compare);
+                CF_RESULT=dataArray.splice(0,3);
+            }
+          });
+          map.fitBounds(bounds);
         }
         google.maps.event.addDomListener(window, 'load', initialize);
     </script>

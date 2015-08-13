@@ -37,6 +37,28 @@ if (cluster.isMaster) {
 		  // fallback to standard filter function
 		  return compression.filter(req, res)
 		}
+		app.route('/location').post(function(req, res, next) {
+			var api=require('./solrApi');
+			var json=req.body;
+			var options={
+				cityName:json.cityName,
+				minRent:5000, 
+				maxRent:25000, 
+				houseTypes:["Apartment", "House"], 
+				bedRooms:["1", "2"], 
+				lat1:json.lat1, 
+				lng1:json.lng1, 
+				lat2:json.lat2, 
+				lng2:json.lng2
+			};
+			api.getJsonData(options, function(err, response){
+				if(err){
+					res.json(null);
+				}else {
+					res.json(JSON.parse(response));	
+				}				
+			})
+		});
 		app.route('/process').post(function(req, res, next) {
 			var turf=require('turf');
 			var json=req.body.params;
