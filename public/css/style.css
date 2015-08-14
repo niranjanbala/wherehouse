@@ -223,11 +223,11 @@ p {
 }
 
 .pac-input {
-  font-size: 2rem;
+  font-size: 1.5rem;
   width: 100%;
   display: block;
   margin: 0 auto;
-  padding: 1rem 1rem 0.5rem 1rem;
+  padding: 0rem 1rem 0rem 1rem;
   color: #cccccc;
   text-align: left;
   border-radius: 0;
@@ -238,7 +238,7 @@ p {
 }
 @media only screen and (min-width: 30em) {
     .pac-input {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         width: 89%;
     }
 }
@@ -260,7 +260,7 @@ p {
       font-size: 1rem; }
       @media only screen and (min-width: 30em) {
         .pac-container .pac-item span {
-          font-size: 1.5rem; } }
+          font-size: 1rem; } }
     .pac-container .pac-item:hover, .pac-container .pac-item.pac-item-selected {
       background: #00aba6;
       color: #ffffff; }
