@@ -1,0 +1,184 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="css/pure/0.6.0/pure-min.css">
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-old-ie-min.css">
+        <![endif]-->
+        <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="css/pure/0.6.0/grids-responsive-min.css">
+        <!--<![endif]-->
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="/combo/1.18.13?/css/layouts/pricing-old-ie.css">
+        <![endif]-->
+        <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/multiple-select.css">
+        <!--<![endif]-->
+    <!--[if lt IE 9]>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+        <![endif]-->
+    <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?v=3.13&libraries=places,geometry,visualization&sensor=true&language=en"></script>
+    <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="js/jquery.spinner.min.js"></script>
+    <script type="text/javascript" src="js/jquery.multiple.select.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+</head>
+<body>
+    <div class="pure-g">
+        <div class="pure-u-1">
+            <div class="pac-input" style="color:#000"><B>Enter your points of interest e.g Office, Kids'School etc and how far from your house is acceptable &amp; We will tell you where you should be looking :-)</B></div>
+        </div>
+    </div>
+    <div class="pure-g">
+        <div class="pure-u-1 pure-u-md-1-2">
+            <div class="pricing-tables pure-g">
+                <div class="pure-u-1 pure-u-md-1-2">
+                    <div class="pricing-table pricing-table-free">
+                        <div class="pricing-table-header">
+                            <input class="controls pac-input" type="text" placeholder="Enter a location">
+                        </div>
+                        <ul class="pricing-table-list">
+                            <li class="pure-g">
+                                <div class="input-append spinner pure-u-md-3-5  pure-u-md-2-3" data-trigger="spinner">
+                                    <input style="margin:0px" type="text" class="pac-input" value="10" data-max="30" data-min="2" data-step="1" data-rule="quantity">
+                                </div>
+                                <div class="pure-u-md-1-5 pure-u-md-1-3" style="font-size: 1.4rem; ">KM</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="pure-u-1 pure-u-md-1-2">
+                    <div class="pricing-table pricing-table-biz pricing-table-selected">
+                        <div class="pricing-table-header">
+                            <input class="controls pac-input" type="text" placeholder="Enter a location">
+                        </div>
+                        <ul class="pricing-table-list">
+                            <li class="pure-g">
+                                <div class="input-append spinner pure-u-md-3-5 pure-u-md-2-3" data-trigger="spinner">
+                                    <input style="margin:0px" type="text" class="pac-input" value="10" data-max="30" data-min="2" data-step="1" data-rule="quantity"  >
+                                </div>
+                                <div class="pure-u-md-1-5 pure-u-md-1-3" style="font-size: 1.4rem; ">KM</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="pure-u-1 pure-u-md-1-2">
+                    <div class="pricing-table pricing-table-enterprise">
+                        <div class="pricing-table-header">
+                            <input class="controls pac-input" type="text" placeholder="Enter a location">
+                        </div>            
+                        <ul class="pricing-table-list">
+                            <li class="pure-g">
+                                <div class="input-append spinner pure-u-md-3-5  pure-u-md-2-3" data-trigger="spinner">
+                                    <input style="margin:0px" type="text" class="pac-input" value="10" data-max="30" data-min="2" data-step="1" data-rule="quantity"  >
+                                </div>
+                                <div class="pure-u-md-1-5 pure-u-md-1-3" style="font-size: 1.4rem; ">KM</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pure-u-1 pure-u-md-1-2">
+                    <div class="pricing-table pricing-table-free">
+                        <div class="pricing-table-header">
+                            <input class="controls pac-input" type="text" placeholder="Enter a location">
+                        </div>
+                        <ul class="pricing-table-list">
+                            <li class="pure-g">
+                                <div class="input-append spinner pure-u-md-3-5 pure-u-md-2-3" data-trigger="spinner">
+                                    <input style="margin:0px" type="text" class="pac-input" value="10" data-max="30" data-min="2" data-step="1" data-rule="quantity"  >
+                                </div>
+                                <div class="pure-u-md-1-5 pure-u-md-1-3" style="font-size: 1.4rem; ">KM</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="pure-u-1 pure-u-md-1-2">
+                    <div class="pricing-table pricing-table-biz pricing-table-selected">
+                        <div class="pricing-table-header">
+                            <input class="controls pac-input" type="text" placeholder="Enter a location">
+                        </div>                
+                        <ul class="pricing-table-list">
+                            <li class="pure-g">
+                                <div class="input-append spinner pure-u-md-3-5  pure-u-md-2-3" data-trigger="spinner">
+                                    <input style="margin:0px" type="text" class="pac-input" value="10" data-max="30" data-min="2" data-step="1" data-rule="quantity"  >
+                                </div>
+                                <div class="pure-u-md-1-5 pure-u-md-1-3" style="font-size: 1.4rem;">KM</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="pure-u-1 pure-u-md-1-2">
+                    <div class="pricing-table pricing-table-enterprise">
+                        <div class="pricing-table-header">
+                            <input class="controls pac-input" type="text" placeholder="Enter a location">
+                        </div>
+                        <ul class="pricing-table-list">
+                            <li class="pure-g">
+                                <div class="input-append spinner pure-u-md-3-5 pure-u-md-2-3" data-trigger="spinner">
+                                    <input style="margin:0px" type="text" class="pac-input" value="10" data-max="30" data-min="2" data-step="1" data-rule="quantity"  >
+                                </div>
+                                <div class="pure-u-md-1-5 pure-u-md-1-3" style="font-size: 1.4rem; ">KM</div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <div class="pure-u-1 pure-u-md-1-2">
+                    <div class="pure-u-md-1-6" style="font-size: 1.2rem; float: left">Budget</div>
+                    <div class="input-append spinner pure-u-md-1-4" data-trigger="spinner"  style="margin-left: -15px;">
+                        <input style="margin:0px" type="text" class="pac-input" value="5000" data-max="50000" data-min="1000" data-step="500" data-rule="minRent">
+                    </div>
+                    <div class="pure-u-md-1-6"  style="margin-left: 6px;">To</div>
+                    <div class="input-append spinner pure-u-md-1-4" data-trigger="spinner" style="margin-left: -20px;">
+                        <input style="margin:0px" type="text" class="pac-input" value="15000" data-max="50000" data-min="2000" data-step="500" data-rule="maxRent">     
+                    </div>               
+                </div>              
+                <div class="pure-u-1 pure-u-md-1-2">
+                    <label>BHK</label>
+                    <select id="bhk" multiple="multiple">
+                      <option value="1">1 BHK</option>
+                      <option value="2">2 BHK</option>
+                      <option value="3">3 BHK</option>
+                    </select>
+                    <label>Type</label>
+                    <select  id="aptType" multiple="multiple">
+                      <option value="Apartment">Apartment</option>
+                      <option value="House">Independent House</option>
+                    </select>
+                </div>
+                <div class="pure-u-1">
+                    <button class="button-choose pure-button">ENLIGHTEN ME!</button>
+                </div>
+            </div> 
+        </div>
+        <div class="pure-u-1 pure-u-md-1-2">
+            <div class="pac-input"><B>FIND WHERE YOU SHOULD BE LOOKING FOR HOUSE</B></div>
+            <div id="map-canvas" class="banner" height="600px"></div>
+        </div>
+    </div>
+</body>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-65964037-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<!--sharexy code start--><div id='shr_191969'>
+<script type='text/javascript'>(function(w) { if (!w.SharexyWidget) { w.SharexyWidget = {};} if (!w.SharexyWidget.Params) { w.SharexyWidget.Params = {}; } w.SharexyWidget.Params['191969'] = {'code_id':'191969','publisher_key':'undefined','design':'sharexy','layout_static':'h','type':'stf','mode_float':'br','size_float':'60','size_static':'32','buzz':'0','services':['facebook', 'twitter', 'stumbleupon', 'linkedin', 'reddit', 'google_plus', 'buffer'],'url':'current','allways_show_ads':'0','show_ads_sharing':'0','show_ads_cursor':'0','bg_float':'0','bg_color':'#f1f1f1','labels':'','counters':'0', 'counters_float':'0'} })(window);
+</script>
+<script type='text/javascript' src='https://shuttle.sharexy.com/LoaderLite.js'></script></div>
+<a href='http://sharexy.com/'><img src='https://sharexy.com/statpixel.png' style='border: 0' /></a><!--sharexy code end -->
+</html>
