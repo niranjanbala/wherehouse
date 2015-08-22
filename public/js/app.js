@@ -73,24 +73,43 @@ function openUrl(){
     var defaultSearchIntent="search_intent="+$(".search-intent").val();
     //var selectedBhk=$('#bhk').multipleSelect('getSelects');
     //var selectedAptTypes=$('#aptType').multipleSelect('getSelects');
-    var defaultRentParams="&min_inr=5000&max_inr=25000";
+    var defaultRentParams="";
+    var minRange=$(".minrange").val().toUpperCase();
+    var maxRange=$(".maxrange").val().toUpperCase();
+    var isThousand = /^\d+K$/;
+    var isLakh = /^\d+L$/;
+    var isCrore = /^\d+CR$/;
 
     if($(".search-intent").val()=="sale"){
-        defaultRentParams="&min_inr=2000000&max_inr=";
+        var defaultMinValue="2000000";
+        var defaultMaxValue="";        
+        if(minRange.match(isLakh)){
+            defaultMinValue=Number(minRange.replace("L",""))*100000;
+        }
+        if(minRange.match(isCrore)){
+         defaultMinValue=Number(minRange.replace("CR",""))*10000000;   
+        }
+        if(maxRange.match(isLakh)){
+            defaultMaxValue=Number(maxRange.replace("L",""))*100000
+        }
+        if(maxRange.match(isCrore)){
+         defaultMaxValue=Number(maxRange.replace("CR",""))*10000000;      
+        }
+        defaultRentParams="&min_inr="+defaultMinValue+"&max_inr="+defaultMaxValue;
+    } else {
+        var defaultMinValue="10000";
+        var defaultMaxValue="25000";
+        if(minRange.match(isThousand)){
+            defaultMinValue=Number(minRange.replace("K",""))*1000;
+        }
+        if(maxRange.match(isThousand)){
+            defaultMaxValue=Number(maxRange.replace("K",""))*1000;
+        }
+        defaultRentParams="&min_inr="+defaultMinValue+"&max_inr="+defaultMaxValue;
     }
     var defaultBedParams="&bed_rooms="+$(".search-bhk").val();
     var defaultHouseType="&house_type="+$(".search-apt-type").val();
-    //var minRent=$('input[data-rule="minRent"').val();
-    //var maxRent=$('input[data-rule="maxRent"').val();
-    //if(minRent && maxRent){
-        //defaultRentParams="&min_inr="+minRent+"&max_inr="+maxRent;
-    //}
-    //if(selectedBhk.length>0){
-        //defaultBedParams="&bed_rooms="+selectedBhk.join(",");
-    //}
-    //if(selectedAptTypes.length>0) {
-        //defaultHouseType="&house_type="+selectedAptTypes.join(",");
-    //}
+
     var url="https://www.commonfloor.com/listing-search?"+defaultSearchIntent+"&page=1&city="+cityList[selectedCityIndex].cfCityName+
     "&use_pp=0&set_pp=0&fetch_max=1&number_of_children=2&page_size=20&polygon=1&mapBounds=";
     var ne=polygon.getBounds().getNorthEast();
