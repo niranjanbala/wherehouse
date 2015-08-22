@@ -74,6 +74,9 @@ function openUrl(){
     //var selectedBhk=$('#bhk').multipleSelect('getSelects');
     //var selectedAptTypes=$('#aptType').multipleSelect('getSelects');
     var defaultRentParams="&min_inr=5000&max_inr=25000";
+    if(defaultSearchIntent=="sale"){
+        var defaultRentParams="&min_inr=2000000&max_inr=";
+    }
     var defaultBedParams="&bed_rooms="+$(".search-bhk").val();
     var defaultHouseType="&house_type="+$(".search-apt-type").val();
     //var minRent=$('input[data-rule="minRent"').val();
