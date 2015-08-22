@@ -74,8 +74,9 @@ function openUrl(){
     //var selectedBhk=$('#bhk').multipleSelect('getSelects');
     //var selectedAptTypes=$('#aptType').multipleSelect('getSelects');
     var defaultRentParams="&min_inr=5000&max_inr=25000";
-    if(defaultSearchIntent=="sale"){
-        var defaultRentParams="&min_inr=2000000&max_inr=";
+
+    if($(".search-intent").val()=="sale"){
+        defaultRentParams="&min_inr=2000000&max_inr=";
     }
     var defaultBedParams="&bed_rooms="+$(".search-bhk").val();
     var defaultHouseType="&house_type="+$(".search-apt-type").val();
@@ -104,7 +105,6 @@ function openUrl(){
         url+="&prop_name="+nameArray.join(",");
         url+="&property_location_filter="+idArray.join(",");
     }
-    console.log(url);
     window.open(url);
 }
 function compare(a,b) {
