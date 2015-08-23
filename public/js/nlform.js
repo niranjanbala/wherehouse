@@ -173,9 +173,12 @@
 				this.toggle.innerHTML = this.getinput.value.trim() !== '' ? this.getinput.value : this.getinput.getAttribute( 'placeholder' );
 				this.elOriginal.value = this.getinput.value;
 			}
+			valueChanged(this);
 		}
 	}
-
+	function valueChanged(target){
+		console.log($(target.elOriginal,'#city'));
+	}
 	// add to global namespace
 	window.NLForm = NLForm;
 

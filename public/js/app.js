@@ -175,7 +175,9 @@ function initialize() {
     /*$('select').multipleSelect({
             width: '80%'
     });*/
-    var styles = [{"featureType":"all","elementType":"labels.text.fill","stylers":[{"visibility":"off"},{"saturation":36},{"color":"#000000"},{"lightness":40}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"off"},{"color":"#000000"},{"lightness":16}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":17},{"weight":1.2}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":21}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#8b8b8b"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#8b8b8b"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#8b8b8b"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#8b8b8b"},{"lightness":16}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":19}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":17}]}];
+    var simple=function(){console.log(this)};
+    $("select").change(simple);
+    var styles = [{stylers:[{visibility:"off"}]},{featureType:"administrative",elementType:"geometry.stroke",stylers:[{visibility:"on"},{color:"#8f9190"},{weight:0.5}]},{featureType:"landscape.man_made",stylers:[{visibility:"off"}]},{featureType:"landscape",elementType:"geometry.fill",stylers:[{visibility:"on"},{color:"#4b4b4a"}]},{featureType:"administrative.country",elementType:"labels.text.fill",stylers:[{visibility:"on"},{color:"#dedede"}]},{featureType:"administrative.province",elementType:"labels.text.fill",stylers:[{visibility:"on"},{color:"#3d3e3d"}]},{featureType:"administrative.locality",elementType:"labels.text.fill",stylers:[{visibility:"on"},{color:"#cccccc"}]},{featureType:"administrative.locality",elementType:"labels.text.stroke",stylers:[{visibility:"off"}]},{featureType:"water",stylers:[{visibility:"on"},{color:"#27231f"}]},{featureType:"road",elementType:"labels.text.fill",stylers:[{visibility:"on"},{color:"#dddddd"}]},{featureType:"road.highway",elementType:"geometry.fill",stylers:[{visibility:"on"},{color:"#9b9b9b"},{weight:1.1}]},{featureType:"road.arterial",elementType:"geometry.fill",stylers:[{visibility:"on"},{weight:0.9},{color:"#a7a7a7"}]},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{visibility:"off"},{weight:0.5},{color:"#8f9190"}]},{featureType:"road.local",elementType:"geometry.fill",stylers:[{visibility:"on"},{color:"#8f9190"},{weight:0.5}]},{featureType:"road.arterial",elementType:"labels.icon",stylers:[{visibility:"on"},{invert_lightness:true}]},{featureType:"road.arterial",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"road.highway",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"road.highway",elementType:"labels.icon",stylers:[{visibility:"off"}]},{featureType:"administrative.land_parcel",stylers:[{visibility:"off"}]},{featureType:"administrative.neighborhood",stylers:[{visibility:"off"}]},{featureType:"water",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"road"}];
     var styledMap = new google.maps.StyledMapType(styles,
     {name: "Styled Map"});
 
@@ -266,10 +268,10 @@ function processPoints(map, geometry) {
   if(!polygon) {
       polygon=new google.maps.Polygon({
         map: map,
-        strokeColor: 'white',
+        strokeColor: '#2191B1',
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        fillColor: 'white',
+        fillColor: '#2191B1',
         fillOpacity: 0.3
       }); 
     google.maps.event.addListener(polygon, 'click', function(event){
