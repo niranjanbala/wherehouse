@@ -226,7 +226,10 @@ function initialize() {
             return obj.location!=null;
         }
         var filtered=params.filter(skipNullLocations);
-        if(filtered.length==0) {return;}
+        if(filtered.length==0) {
+            alert("Please select at-least one location");
+            return;
+        }
         selectedCityIndex=filtered[0].cityIndex;
         ga('send', '_trackEvent','Where_House', 'click', JSON.stringify(filtered));                
         $.post( "/process", { params: filtered})
