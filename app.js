@@ -37,15 +37,87 @@ if (cluster.isMaster) {
 		  // fallback to standard filter function
 		  return compression.filter(req, res)
 		}
+		app.route('/smart-search').get(function(req, res, next) {
+			var json=JSON.parse(req.query.qs);
+			var options={
+				search_intent: json.search_intent,
+				cityName:json.cityName,
+				minRent:json.min_inr, 
+				maxRent:json.max_inr, 
+				houseTypes:json.houseTypes, 
+				bedRooms:json.bedRooms, 
+				lat1:json.lat1, 
+				lng1:json.lng1, 
+				lat2:json.lat2, 
+				lng2:json.lng2
+			};
+			var api=require('./solrApi');
+			api.getJsonData(options, function(err, response){
+				if(err){
+					res.redirect("https://www.commonfloor.com");
+				}else {					
+			    var defaultSearchIntent="search_intent="+options.search_intent;
+			    var defaultRentParams="&min_inr="+options.minRent+"&max_inr="+options.maxRent;
+			    var defaultBedParams="&bed_rooms="+options.bedRooms;
+			    var defaultHouseType="&house_type="+options.houseTypes;			    
+			    var url="https://www.commonfloor.com/listing-search?"+defaultSearchIntent+"&page=1&city="+options.cityName+
+			    "&use_pp=0&set_pp=0&fetch_max=1&number_of_children=2&page_size=20&polygon=1&mapBounds=";
+			    url+=options.lat1+","+options.lng1+","+options.lat2+","+options.lng2;
+			    url+=defaultRentParams;
+			    url+=defaultBedParams;
+			    url+=defaultHouseType;
+			    var data=JSON.parse(response);
+			    var obj={};
+			    data.data.forEach(function(item){
+            if(item.children && item.children.length>0){                        
+                var name= item.children[0].listing_area;
+                var isRoad=name.toLowerCase().indexOf('road');
+                var id= item.children[0].listing_area_id;
+                if(isRoad==-1){
+                    if(!obj["area_"+id]) {
+                        obj["area_"+id]={
+                            id: "area_"+id,
+                            name:name, 
+                            count:1
+                        };
+                    }
+                    else{
+                        obj["area_"+id].count=obj["area_"+id].count+1;
+                    }
+                }
+            }                    
+        })                
+        var dataArray = Object.keys(obj).map(function(k){return obj[k]});
+        dataArray.sort(function compare(a,b) {
+            if(a.count==b.count)
+                return 0;
+            else if(a.count>b.count){
+                return -1;
+            } else {
+                return 1;
+            }
+				});
+        var CF_RESULT=dataArray.splice(0,5);    
+			  if(CF_RESULT){                
+			        var nameArray = Object.keys(CF_RESULT).map(function(k){return CF_RESULT[k].name});
+			        var idArray = Object.keys(CF_RESULT).map(function(k){return CF_RESULT[k].id});
+			        url+="&prop_name="+nameArray.join(",");
+			        url+="&property_location_filter="+idArray.join(",");
+			    }
+					res.redirect(url);
+				}				
+			});
+		});
 		app.route('/location').post(function(req, res, next) {
 			var api=require('./solrApi');
 			var json=req.body;
 			var options={
+				search_intent: json.search_intent,
 				cityName:json.cityName,
-				minRent:5000, 
-				maxRent:25000, 
-				houseTypes:["Apartment", "House"], 
-				bedRooms:["1", "2"], 
+				minRent:json.min_inr, 
+				maxRent:json.max_inr, 
+				houseTypes:json.houseTypes, 
+				bedRooms:json.bedRooms, 
 				lat1:json.lat1, 
 				lng1:json.lng1, 
 				lat2:json.lat2, 

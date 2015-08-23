@@ -38,7 +38,7 @@ var cityList=[{
 var infoWindow = new google.maps.InfoWindow({
     content: "<a>Click to see matching properties.</a>"
 });     
-function CenterControl(controlDiv, map) {
+function CenterControl(controlDiv, map, link) {
 
   // Set CSS for the control border.
   var controlUI = document.createElement('div');
@@ -60,15 +60,18 @@ function CenterControl(controlDiv, map) {
   controlText.style.lineHeight = '38px';
   controlText.style.paddingLeft = '5px';
   controlText.style.paddingRight = '5px';
-  controlText.innerHTML = 'Click to See Matching Properties';
+  controlText.innerHTML = "<a target='_blank' href='"+link+"'>Click to See Matching Properties</a>";
   controlUI.appendChild(controlText);
 
   // Setup the click event listeners: simply set the map to Chicago.
   controlUI.addEventListener('click', function() {
-    searchInBounds();
+    //searchInBounds();
   });
 
 }
+var isThousand = /^\d+K$/;
+var isLakh = /^\d+L$/;
+var isCrore = /^\d+CR$/;
 function openUrl(){
     var defaultSearchIntent="search_intent="+$(".search-intent").val();
     //var selectedBhk=$('#bhk').multipleSelect('getSelects');
@@ -76,9 +79,6 @@ function openUrl(){
     var defaultRentParams="";
     var minRange=$(".minrange").val().toUpperCase();
     var maxRange=$(".maxrange").val().toUpperCase();
-    var isThousand = /^\d+K$/;
-    var isLakh = /^\d+L$/;
-    var isCrore = /^\d+CR$/;
 
     if($(".search-intent").val()=="sale"){
         var defaultMinValue="2000000";
@@ -171,12 +171,62 @@ function setAutoCompleteListener(autocomplete, index){
         }
     });
 }
+function createLink (map) {
+    var centerControlDiv = document.createElement('div');
+    //var link='/smart-search?qs=';
+    var bounds=polygon.getBounds();
+    var ne=bounds.getNorthEast();
+    var sw=bounds.getSouthWest();
+    var cityName=cityList[selectedCityIndex].cfCityName;
+    var minRange=$(".minrange").val().toUpperCase();
+    var maxRange=$(".maxrange").val().toUpperCase();
+    if($(".search-intent").val()=="sale"){
+        var defaultMinValue="2000000";
+        var defaultMaxValue="";        
+        if(minRange.match(isLakh)){
+            defaultMinValue=Number(minRange.replace("L",""))*100000;
+        }
+        if(minRange.match(isCrore)){
+         defaultMinValue=Number(minRange.replace("CR",""))*10000000;   
+        }
+        if(maxRange.match(isLakh)){
+            defaultMaxValue=Number(maxRange.replace("L",""))*100000
+        }
+        if(maxRange.match(isCrore)){
+         defaultMaxValue=Number(maxRange.replace("CR",""))*10000000;      
+        }
+    } else {
+        var defaultMinValue="10000";
+        var defaultMaxValue="25000";
+        if(minRange.match(isThousand)){
+            defaultMinValue=Number(minRange.replace("K",""))*1000;
+        }
+        if(maxRange.match(isThousand)){
+            defaultMaxValue=Number(maxRange.replace("K",""))*1000;
+        }
+    }
+    var params={ 
+        cityName: cityName,
+        lat1: sw.lat(),
+        lng1: sw.lng(),
+        lat2: ne.lat(),
+        lng2: ne.lng(),
+        min_inr: defaultMinValue,
+        max_inr: defaultMaxValue,
+        search_intent: $(".search-intent").val(),
+        bedRooms: [$(".search-bhk").val()],
+        houseTypes: $(".search-apt-type").val()
+    };
+    console.log(params);
+    var link='/smart-search?qs='+JSON.stringify(params,null, 0);
+    console.log(link);
+    var centerControl = new CenterControl(centerControlDiv, map, link);
+    centerControlDiv.index = 1;
+    map.controls[google.maps.ControlPosition.TOP_CENTER].clear();
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+}
+var map;
 function initialize() {
-    /*$('select').multipleSelect({
-            width: '80%'
-    });*/
-    var simple=function(){console.log(this)};
-    $("select").change(simple);
     var styles = [{stylers:[{visibility:"off"}]},{featureType:"administrative",elementType:"geometry.stroke",stylers:[{visibility:"on"},{color:"#8f9190"},{weight:0.5}]},{featureType:"landscape.man_made",stylers:[{visibility:"off"}]},{featureType:"landscape",elementType:"geometry.fill",stylers:[{visibility:"on"},{color:"#4b4b4a"}]},{featureType:"administrative.country",elementType:"labels.text.fill",stylers:[{visibility:"on"},{color:"#dedede"}]},{featureType:"administrative.province",elementType:"labels.text.fill",stylers:[{visibility:"on"},{color:"#3d3e3d"}]},{featureType:"administrative.locality",elementType:"labels.text.fill",stylers:[{visibility:"on"},{color:"#cccccc"}]},{featureType:"administrative.locality",elementType:"labels.text.stroke",stylers:[{visibility:"off"}]},{featureType:"water",stylers:[{visibility:"on"},{color:"#27231f"}]},{featureType:"road",elementType:"labels.text.fill",stylers:[{visibility:"on"},{color:"#dddddd"}]},{featureType:"road.highway",elementType:"geometry.fill",stylers:[{visibility:"on"},{color:"#9b9b9b"},{weight:1.1}]},{featureType:"road.arterial",elementType:"geometry.fill",stylers:[{visibility:"on"},{weight:0.9},{color:"#a7a7a7"}]},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{visibility:"off"},{weight:0.5},{color:"#8f9190"}]},{featureType:"road.local",elementType:"geometry.fill",stylers:[{visibility:"on"},{color:"#8f9190"},{weight:0.5}]},{featureType:"road.arterial",elementType:"labels.icon",stylers:[{visibility:"on"},{invert_lightness:true}]},{featureType:"road.arterial",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"road.highway",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"road.highway",elementType:"labels.icon",stylers:[{visibility:"off"}]},{featureType:"administrative.land_parcel",stylers:[{visibility:"off"}]},{featureType:"administrative.neighborhood",stylers:[{visibility:"off"}]},{featureType:"water",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"road"}];
     var styledMap = new google.maps.StyledMapType(styles,
     {name: "Styled Map"});
@@ -192,13 +242,9 @@ function initialize() {
             mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
         }
     };
-    var map = new google.maps.Map($('#map')[0], mapOptions);
+    map = new google.maps.Map($('#map')[0], mapOptions);
     map.mapTypes.set('map_style', styledMap);
     map.setMapTypeId('map_style');    
-    var centerControlDiv = document.createElement('div');
-    var centerControl = new CenterControl(centerControlDiv, map);
-    centerControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
     $('.controls.pac-input').each(function(index){
         locations.push(null);
         cityListSelected.push(null);
@@ -211,7 +257,7 @@ function initialize() {
         var autocomplete = new google.maps.places.Autocomplete($(this)[0],options);
         setAutoCompleteListener(autocomplete, index);
     });
-    $('.nl-submit').click(function(){        
+    $('.nl-submit').click(function() {
         var params=$('select.nlform-select.distance').map(function() {
          return { distance: $(this).val()};
         }).get();
@@ -234,7 +280,7 @@ function initialize() {
         ga('send', '_trackEvent','Where_House', 'click', JSON.stringify(filtered));                
         $.post( "/process", { params: filtered})
           .done(function( data ) {
-            if(data){
+            if(data){                
                 $("html, body").animate({ scrollTop: $(document).height() }, 1000);
                 var features=map.data.addGeoJson(data);                        
                 map.data.forEach(function(feature) {
@@ -243,6 +289,7 @@ function initialize() {
                 features.forEach(function(feature){
                     map.data.remove(feature);
                 })
+                createLink(map);
             } else {
                 alert("Sorry! you are a hard person to satisfy :)");
                 if(polygon) {
@@ -292,17 +339,50 @@ function processPoints(map, geometry) {
   var bounds=polygon.getBounds();
   map.fitBounds(bounds);
 }
-function searchInBounds(){
+function searchInBounds() {
   var bounds=polygon.getBounds();
   var ne=bounds.getNorthEast();
   var sw=bounds.getSouthWest();
   var cityName=cityList[selectedCityIndex].cfCityName;
+  var minRange=$(".minrange").val().toUpperCase();
+  var maxRange=$(".maxrange").val().toUpperCase();
+    
+    if($(".search-intent").val()=="sale"){
+        var defaultMinValue="2000000";
+        var defaultMaxValue="";        
+        if(minRange.match(isLakh)){
+            defaultMinValue=Number(minRange.replace("L",""))*100000;
+        }
+        if(minRange.match(isCrore)){
+         defaultMinValue=Number(minRange.replace("CR",""))*10000000;   
+        }
+        if(maxRange.match(isLakh)){
+            defaultMaxValue=Number(maxRange.replace("L",""))*100000
+        }
+        if(maxRange.match(isCrore)){
+         defaultMaxValue=Number(maxRange.replace("CR",""))*10000000;      
+        }
+    } else {
+        var defaultMinValue="10000";
+        var defaultMaxValue="25000";
+        if(minRange.match(isThousand)){
+            defaultMinValue=Number(minRange.replace("K",""))*1000;
+        }
+        if(maxRange.match(isThousand)){
+            defaultMaxValue=Number(maxRange.replace("K",""))*1000;
+        }
+    }  
   $.post( "/location", { 
+    search_intent: $(".search-intent").val(),
     cityName: cityName,
+    min_inr: defaultMinValue,
+    max_inr: defaultMaxValue,
     lat1:sw.lat(),
     lng1:sw.lng(),
     lat2:ne.lat(),
-    lng2:ne.lng()
+    lng2:ne.lng(),
+    bedRooms: [$(".search-bhk").val()],
+    houseTypes: $(".search-apt-type").val()
   }).done(function( data ) {
     var obj={};
     if(data.status=="success"){

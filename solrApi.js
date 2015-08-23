@@ -4,7 +4,7 @@ var solrApi={
 	getRequestParam: function(options){
 		var timeStamp=new Date().getTime();
 		var requestParam={
-		    "search_intent": "rent",
+		    "search_intent": options.search_intent,
 		    "min_inr": options.minRent,
 		    "max_inr": options.maxrent,//
 		    "house_type": options.houseTypes,
@@ -20,7 +20,7 @@ var solrApi={
 		    "number_of_children": "2",
 		    "mapBounds": [options.lat1, options.lng1, options.lat2, options.lng2],
 		    "srtby": "bestquality",
-		    "page_size": 20
+		    "page_size": 30
 			};
 			return requestParam;
 	},

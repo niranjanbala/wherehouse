@@ -218,7 +218,7 @@ input:focus::-ms-input-placeholder {
 }
 
 .nl-form .nl-submit {
-	width: 50%;
+	width: 45%;
 	line-height: 2;
 	text-transform: uppercase;
 	cursor: pointer;
@@ -239,6 +239,27 @@ input:focus::-ms-input-placeholder {
 	background: #69B1A9;
 }
 
+.nl-form .nl-reset {
+	width: 45%;
+	line-height: 2;
+	text-transform: uppercase;
+	cursor: pointer;
+	position: relative;
+	background: #76C3BD;
+	color: #fff;
+	padding: 0 1em 0 0;
+	font-size: 70%;
+	font-weight: bold;
+	letter-spacing: 3px;
+}
+
+.nl-reset:before {
+	color: #fff;
+	float: left;
+	padding: 0 0.7em;
+	margin: 0 0.8em 0 0;
+	background: #69B1A9;
+}
 .no-touch .nl-form .nl-submit:hover,
 .no-touch .nl-form .nl-submit:active {
 	background: #69B1A9;
