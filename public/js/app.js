@@ -156,7 +156,8 @@ function setAutoCompleteListener(autocomplete, index){
         if (!place.geometry) {
             locations[index]=null;
             cityListSelected[index]=null;
-            window.alert("Autocomplete's returned place contains no geometry");
+            sweetAlert("Oops...", "Invalid location selected", "error");
+            //window.alert("Autocomplete's returned place contains no geometry");
             return;
         }
         var cityIndex=findCity(place);
@@ -167,7 +168,8 @@ function setAutoCompleteListener(autocomplete, index){
             } else {
                 locations[index]=null;
                 cityListSelected[index]=null;
-                alert("Please enter location within the city selected");
+                sweetAlert("Oops...", "Please enter location within the city selected", "error");
+                //alert("Please enter location within the city selected");
             }
         }
     });
@@ -274,7 +276,8 @@ function initialize() {
         }
         var filtered=params.filter(skipNullLocations);
         if(filtered.length==0) {
-            alert("Please select at-least one location");
+            sweetAlert("Oops...", "Please select at-least one location", "error");
+            //alert("Please select at-least one location");
             return;
         }
         selectedCityIndex=filtered[0].cityIndex;
@@ -292,7 +295,8 @@ function initialize() {
                 })
                 createLink(map);
             } else {
-                alert("Sorry! you are a hard person to satisfy :)");
+                swal("Sorry! you are a hard person to satisfy :)")
+                //alert("Sorry! you are a hard person to satisfy :)");
                 if(polygon) {
                     infoWindow.setMap(null);
                     polygon.setMap(null);
