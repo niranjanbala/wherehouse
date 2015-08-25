@@ -2,6 +2,7 @@ var locations=[];
 var CF_RESULT;
 var cityListSelected=[];
 var polygon;
+var circle;
 var selectedCityIndex=-1;
 var cityList=[{
     name: 'Bengaluru',
@@ -234,7 +235,7 @@ function initialize() {
     var mapOptions = {
         center: new google.maps.LatLng(12.9539974,77.6268196),
         scrollwheel: false,
-        disableDefaultUI: true,
+        //disableDefaultUI: true,
         zoom: 12,
         minZoom:12,
         maxZoom:16,
@@ -317,13 +318,20 @@ function processPoints(map, geometry) {
   });
   if(!polygon) {
       polygon=new google.maps.Polygon({
-        map: map,
         strokeColor: '#2191B1',
         strokeOpacity: 0.8,
         strokeWeight: 2,
         fillColor: '#2191B1',
         fillOpacity: 0.3
       }); 
+      circle=new google.maps.Polygon({
+        map: map,
+        strokeColor: '#2191B1',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#2191B1',
+        fillOpacity: 0.3
+      });
     google.maps.event.addListener(polygon, 'click', function(event){
         searchInBounds();
     });
@@ -335,9 +343,45 @@ function processPoints(map, geometry) {
     });
   }          
   polygon.setPath(paths);
-  polygon.setMap(map);   
   var bounds=polygon.getBounds();
+  var center=bounds.getCenter();
+  var radiusInMeter=2000;
+  var pathCircle=drawCircle(center, kmToMiles(radiusInMeter / 1000), 1);
+  circle.setPaths(pathCircle);
+  circle.setMap(map);
   map.fitBounds(bounds);
+}
+function kmToMiles(kilometres) {
+        var miles = Number(kilometres) * .62;
+        return miles.toFixed(2);
+}
+function drawCircle(point, radius, dir) {
+        var d2r = Math.PI / 180; // degrees to radians 
+        var r2d = 180 / Math.PI; // radians to degrees 
+        var earthsradius = 3963; // 3963 is the radius of the earth in miles
+
+        var points = 32;
+
+        // find the raidus in lat/lon 
+        var rlat = (radius / earthsradius) * r2d;
+        var rlng = rlat / Math.cos(point.lat() * d2r);
+
+        var extp = new Array();
+        if (dir == 1) {
+            var start = 0;
+            var end = points + 1; // one extra here makes sure we connect the path
+        } else {
+            var start = points + 1;
+            var end = 0;
+        }
+        for (var i = start;
+            (dir == 1 ? i < end : i > end); i = i + dir) {
+            var theta = Math.PI * (i / (points / 2));
+            var ey = point.lng() + (rlng * Math.cos(theta)); // center a + radius x * cos(theta) 
+            var ex =  point.lat() + (rlat * Math.sin(theta)); // center b + radius y * sin(theta) 
+            extp.push(new google.maps.LatLng(ex, ey));
+        }
+        return extp;
 }
 function searchInBounds() {
   var bounds=polygon.getBounds();

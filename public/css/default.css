@@ -22,7 +22,8 @@ body, html { font-size: 100%; padding: 0; margin: 0;}
 body {
 	font-family: 'Lato', Calibri, Arial, sans-serif;
 	color: white;
-	background: #9E9E9E;
+	/*background: #9E9E9E;*/
+	background:#444040;
 	font-weight: 300;
 	overflow-x: hidden;
 }
@@ -45,19 +46,34 @@ a:active {
 .main,
 .container > header {
 	margin: 0 auto;
-	padding: 2em;
+	padding: 1em;
+	padding-top: 1em;
 }
 
+::-webkit-input-placeholder{
+   color: #cccccc !important;
+}
+:-moz-placeholder{
+	color: #cccccc !important;
+}
+::-moz-placeholder{
+	color: #cccccc !important;
+}
+:-ms-input-placeholder{
+	color: #cccccc !important;
+}
 .container > header {
 	text-align: center;
 	background: rgba(0,0,0,0.01);
 }
 
 .container > header h1 {
-	font-size: 3em;
-	line-height: 1.3;
+	font-size: 2.5em;
+	/*line-height: 1.3;*/
 	margin: 0;
-	font-weight: 300;
+	font-weight: normal;
+	text-transform: uppercase;
+	color:#fff;
 }
 
 .container > header span {
@@ -70,6 +86,8 @@ a:active {
 /* Main Content */
 .main {
 	max-width: 50em;
+	/*box-shadow: inset 0 2px 0 rgba(255,255,255,.3),0 2px 4px rgba(0,0,0,.4);*/
+    margin-bottom: 10px;
 }
 
 /* To Navigation Style */
@@ -156,7 +174,7 @@ a:active {
   border: 0.1rem solid #000000; 
 }
 .pac-input:focus {
-    color: #000000; 
+    color: #ffe980; 
 }
 @media only screen and (min-width: 30em) {
     .pac-input {
@@ -166,10 +184,10 @@ a:active {
 }
 
 .pac-container {
-  border: 0.1rem solid #000000;
-  border-top: 0.1rem solid #cccccc; }
+  border: 0.1rem solid #ffe980;
+  border-top: 0.1rem solid #ffe980; }
   .pac-container .pac-item {
-    color: #cccccc;
+    color: #ffe980;
     line-height: 1;
     padding: 0.65rem 1rem 0.25rem;
     -webkit-transition: all linear 0.3s;
@@ -184,8 +202,10 @@ a:active {
         .pac-container .pac-item span {
           font-size: 1rem; } }
     .pac-container .pac-item:hover, .pac-container .pac-item.pac-item-selected {
-      background: #00aba6;
-      color: #ffffff; }
+      background: #444040;
+      color: #ffe980; }
   .pac-container .pac-icon {
     display: none; }
+
+
 
