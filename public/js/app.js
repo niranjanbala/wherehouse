@@ -43,8 +43,8 @@ function CenterControl(controlDiv, map, link) {
 
   // Set CSS for the control border.
   var controlUI = document.createElement('div');
-  controlUI.style.backgroundColor = '#fff';
-  controlUI.style.border = '2px solid #fff';
+  controlUI.style.backgroundColor = '#49CAA0';
+  // controlUI.style.border = '2px solid #fff';
   controlUI.style.borderRadius = '3px';
   controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
   controlUI.style.cursor = 'pointer';
@@ -61,7 +61,7 @@ function CenterControl(controlDiv, map, link) {
   controlText.style.lineHeight = '38px';
   controlText.style.paddingLeft = '5px';
   controlText.style.paddingRight = '5px';
-  controlText.innerHTML = "<a target='_blank' href='"+link+"'>Click to See Matching Properties</a>";
+  controlText.innerHTML = "<a class='mapBoxA' target='_blank' href='"+link+"'>Click to See Matching Properties</a>";
   controlUI.appendChild(controlText);
 
   // Setup the click event listeners: simply set the map to Chicago.
@@ -177,6 +177,9 @@ function setAutoCompleteListener(autocomplete, index){
 function createLink (map) {
     var centerControlDiv = document.createElement('div');
     //var link='/smart-search?qs=';
+    var att = document.createAttribute("class");       // Create a "class" attribute
+    att.value = "democlass";                           // Set the value of the class attribute
+    centerControlDiv.setAttributeNode(att);
     var bounds=polygon.getBounds();
     var ne=bounds.getNorthEast();
     var sw=bounds.getSouthWest();
@@ -349,11 +352,29 @@ function processPoints(map, geometry) {
   polygon.setPath(paths);
   var bounds=polygon.getBounds();
   var center=bounds.getCenter();
-  var radiusInMeter=2000;
+  var radiusInMeter=getRadius(bounds);
   var pathCircle=drawCircle(center, kmToMiles(radiusInMeter / 1000), 1);
   circle.setPaths(pathCircle);
   circle.setMap(map);
   map.fitBounds(bounds);
+}
+function getRadius(bounds){
+    var center = bounds.getCenter();
+    var ne = bounds.getNorthEast();
+
+    // r = radius of the earth in statute miles
+    var r = 3963.0;  
+
+    // Convert lat or lng from decimal degrees into radians (divide by 57.2958)
+    var lat1 = center.lat() / 57.2958; 
+    var lon1 = center.lng() / 57.2958;
+    var lat2 = ne.lat() / 57.2958;
+    var lon2 = ne.lng() / 57.2958;
+
+    // distance = circle radius from center to Northeast corner of bounds
+    var dis = r * Math.acos(Math.sin(lat1) * Math.sin(lat2) + 
+      Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1));
+    return dis*1000;
 }
 function kmToMiles(kilometres) {
         var miles = Number(kilometres) * .62;

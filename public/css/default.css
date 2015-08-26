@@ -169,12 +169,14 @@ a:active {
   margin: 0 auto;
   padding: 0rem 1rem 0rem 1rem;
   color: #cccccc;
+
   text-align: left;
   border-radius: 0;
   border: 0.1rem solid #000000; 
 }
 .pac-input:focus {
-    color: #ffe980; 
+    /*color: #ffe980; */
+     color: #49CAA0;
 }
 @media only screen and (min-width: 30em) {
     .pac-input {
@@ -184,10 +186,10 @@ a:active {
 }
 
 .pac-container {
-  border: 0.1rem solid #ffe980;
-  border-top: 0.1rem solid #ffe980; }
+  border: 0.1rem solid #49CAA0;
+  border-top: 0.1rem solid #49CAA0; }
   .pac-container .pac-item {
-    color: #ffe980;
+    color: #49CAA0;
     line-height: 1;
     padding: 0.65rem 1rem 0.25rem;
     -webkit-transition: all linear 0.3s;

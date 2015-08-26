@@ -32,7 +32,12 @@
             <div class="main clearfix">
                 <header class="head"> 
                     <h1>
-                        <img src="" width="120px" height="80px" />
+                        <div class="logoWrap">
+                            <center>
+                                <img class="logo" src="" width="120px" height="80px" />
+                            </center>
+                        </div>
+                        
                         <span class="pa">Your Personal Assistant <br> for  House Search</span>
                     </h1>    
                 </header>
@@ -87,24 +92,30 @@
                      &amp; the house should be located within   
                     <select class="nlform-select distance">
                         <option value="2">2KM</option>
-                        <option value="5" selected>5KM</option>
+                        <option value="4" selected>4KM</option>
+                        <option value="6">6KM</option>
                         <option value="8">8KM</option>
                         <option value="10">10KM</option>
                         <option value="15">15KM</option>
+                        <option value="20">20KM</option>
                     </select> from <input class="controls pac-input" style="width: 40%;" type="text" placeholder="Enter a location">
                     and <select class="nlform-select distance">
                         <option value="2">2KM</option>
-                        <option value="5" selected>5KM</option>
+                        <option value="4" selected>4KM</option>
+                        <option value="6">6KM</option>
                         <option value="8">8KM</option>
                         <option value="10">10KM</option>
                         <option value="15">15KM</option>
+                        <option value="20">20KM</option>
                     </select> from <input class="controls pac-input" style="width: 55%;" type="text" placeholder="(Optional Location) ">
                     and <select class="nlform-select distance">
                         <option value="2">2KM</option>
-                        <option value="5" selected>5KM</option>
+                        <option value="4" selected>4KM</option>
+                        <option value="6">6KM</option>
                         <option value="8">8KM</option>
                         <option value="10">10KM</option>
                         <option value="15">15KM</option>
+                        <option value="20">20KM</option>
                     </select> from <input class="controls pac-input" style="width: 55%;" type="text" placeholder="(Optional Location) ">
                     <div class="nl-submit-wrap">
                         <button class="nl-submit" type="button" >ASSIST ME</button>
@@ -115,8 +126,15 @@
                 </form>
             </div>
         </div><!-- /container -->
-        <div id="map" class="map"></div>
-        <footer class="mapFoot">made with <span style="color:red">&hearts;</span> in <a href="">Commonfloor</a></footer>
+         <div  class="mapWrap">
+              <div id="map" class="map"></div>
+         </div>   
+       
+        <footer class="mapFoot">
+            made with <span style="color:red">&hearts;</span> in <a href="https://www.commonflooor.com"  target="_blank" >Commonfloor</a><br>
+            Powered by <br>
+            <a href="http://aws.amazon.com/" target="_blank"><img src="aws.png"></a><a href="http://turfjs.org/" target="_blank"><img src="turf.png"></a>
+        </footer>
         <script src="js/nlform.js"></script>
         <script>
             var nlform = new NLForm( document.getElementById( 'nl-form' ) );            
