@@ -1,6 +1,9 @@
 var turf=require('turf');
-var centerPoint=[ 77.593174, 12.964035];
-var cityRadius=25;
+var mumbai=[72.949869,19.105610];
+var bangalore=[ 77.593174, 12.964035];
+var delhi=[ 77.269,28.643];
+var centerPoint=delhi;
+var cityRadius=30;
 var point=turf.point(centerPoint);
 var unit = 'kilometers';
 var buffered = turf.buffer(point, cityRadius, unit);
@@ -19,8 +22,11 @@ squareGrid.features.forEach(function(item){
 	};
 	var data={
 		centerPoint: centerPoint,
+		city: 'delhi',
 		done: false
 	}
 	array.push(data);
 })
-console.log(JSON.stringify(array,null, 4));
+console.log(JSON.stringify({
+	"results": array
+},null, 4));

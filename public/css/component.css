@@ -307,3 +307,39 @@ input:focus::-ms-input-placeholder {
 		font-size: 2em;
 	}
 }
+
+
+
+
+.head{
+	margin-top: 1em; text-align:left;border-bottom:1px solid #ffe980;margin-bottom:40px;
+}
+.pa{padding-left:40px; display:inline-block;font-size:41px;}
+.map{border: 10px solid; width:60%; height:500px;margin-bottom: 20px;left:20%;}
+.mapFoot{text-align: center;width:60%; margin: 0 auto; margin-bottom: 20px; left:20%;}
+
+@media only screen and (min-width: 320px) and (max-width: 1024px){
+
+.map{
+	width:95%;
+	margin:0 auto;
+	left:0;
+}
+
+.pa{
+	padding-left:0px;
+}
+
+.nl-form .nl-submit{
+	    margin-left: 0px;
+	   line-height: 27px;
+    padding: 17px;
+}
+.nl-form .nl-reset{
+	 line-height: 27px;
+    padding: 17px;
+}
+
+}
+
+
