@@ -211,3 +211,17 @@ a:active {
 
 
 
+ul.share-buttons{
+  list-style: none;
+  display: inline-block;
+  margin: 0 auto;
+  padding: 0;
+}
+
+ul.share-buttons li{
+  display: inline;
+}
+
+ul.share-buttons img{
+  width: 32px;
+}
