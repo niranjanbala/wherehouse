@@ -2,7 +2,7 @@
 	font-family: 'nlicons';
 	src:url('../fonts/nlicons/nlicons.eot');
 	src:url('../fonts/nlicons/nlicons.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/nlicons/nlicons.svg#nlicons') format('svg');
+	url('/fonts/nlicons/nlicons.svg#nlicons') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }

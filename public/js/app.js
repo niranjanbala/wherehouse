@@ -41,6 +41,9 @@ var host="";
 var infoWindow = new google.maps.InfoWindow({
     content: "<a>Click to see matching properties.</a>"
 });     
+function toCf () {
+    ga('send', 'event','to_cf_click', 'click', $(".mapBoxA").attr('href'));
+}
 function CenterControl(controlDiv, map, link) {
 
   // Set CSS for the control border.
@@ -63,7 +66,7 @@ function CenterControl(controlDiv, map, link) {
   controlText.style.lineHeight = '38px';
   controlText.style.paddingLeft = '5px';
   controlText.style.paddingRight = '5px';
-  controlText.innerHTML = "<a class='mapBoxA' target='_blank' href='"+link+"'>Click to See Matching Properties</a>";
+  controlText.innerHTML = "<a class='mapBoxA' onclick='toCf()' target='_blank' href='"+link+"'>Click to See Matching Properties</a>";
   controlUI.appendChild(controlText);
 
   // Setup the click event listeners: simply set the map to Chicago.
@@ -144,6 +147,7 @@ function openUrl(){
         url+="&prop_name="+nameArray.join(",");
         url+="&property_location_filter="+idArray.join(",");
     }
+    ga('send', 'event','to_cf_dialog', 'click', url);
     window.open(url);
 }
 function compare(a,b) {
@@ -275,7 +279,7 @@ function initialize() {
             return;
         }
         selectedCityIndex=filtered[0].cityIndex;
-        ga('send', '_trackEvent','Where_House', 'click', JSON.stringify(filtered));                
+        ga('send', 'event','where_house', 'click', JSON.stringify(filtered));
         $.post( host+"/process", { params: filtered})
           .done(function( data ) {
             if(data){                
