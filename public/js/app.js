@@ -36,6 +36,8 @@ var cityList=[{
     cfCityName: 'Delhi-NCR'
 }
 ];   
+//var host="http://lookingforhouse.in";
+var host="";
 var infoWindow = new google.maps.InfoWindow({
     content: "<a>Click to see matching properties.</a>"
 });     
@@ -73,6 +75,48 @@ function CenterControl(controlDiv, map, link) {
 var isThousand = /^\d+K$/;
 var isLakh = /^\d+L$/;
 var isCrore = /^\d+CR$/;
+function getDefaultMinValue (search_intent, bhk) {
+    if(search_intent=='rent') {       
+        switch(bhk) {
+            case "1":
+                return ""; 
+            case "2":
+                return "10000";
+            case "3":
+                return "20000";
+        }    
+    } else if(search_intent=='sale') {
+        switch(bhk) {
+            case "1":
+                return "500000"; 
+            case "2":
+                return "2500000"
+            case "3":
+                return "4000000";
+        }
+    }
+}
+function getDefaultMaxValue (search_intent, bhk) {
+    if(search_intent=='rent') {       
+        switch(bhk) {
+            case "1":
+                return "10000"; 
+            case "2":
+                return "20000";
+            case "3":
+                return "";
+        }    
+    } else if(search_intent=='sale') {
+        switch(bhk) {
+            case "1":
+                return "2500000"; 
+            case "2":
+                return "5000000"
+            case "3":
+                return ""
+        }
+    }
+}
 function openUrl(){
     var defaultSearchIntent="search_intent="+$(".search-intent").val();
     //var selectedBhk=$('#bhk').multipleSelect('getSelects');
@@ -80,39 +124,14 @@ function openUrl(){
     var defaultRentParams="";
     var minRange=$(".minrange").val().toUpperCase();
     var maxRange=$(".maxrange").val().toUpperCase();
-
-    if($(".search-intent").val()=="sale"){
-        var defaultMinValue="2000000";
-        var defaultMaxValue="";        
-        if(minRange.match(isLakh)){
-            defaultMinValue=Number(minRange.replace("L",""))*100000;
-        }
-        if(minRange.match(isCrore)){
-         defaultMinValue=Number(minRange.replace("CR",""))*10000000;   
-        }
-        if(maxRange.match(isLakh)){
-            defaultMaxValue=Number(maxRange.replace("L",""))*100000
-        }
-        if(maxRange.match(isCrore)){
-         defaultMaxValue=Number(maxRange.replace("CR",""))*10000000;      
-        }
-        defaultRentParams="&min_inr="+defaultMinValue+"&max_inr="+defaultMaxValue;
-    } else {
-        var defaultMinValue="10000";
-        var defaultMaxValue="25000";
-        if(minRange.match(isThousand)){
-            defaultMinValue=Number(minRange.replace("K",""))*1000;
-        }
-        if(maxRange.match(isThousand)){
-            defaultMaxValue=Number(maxRange.replace("K",""))*1000;
-        }
-        defaultRentParams="&min_inr="+defaultMinValue+"&max_inr="+defaultMaxValue;
-    }
+    var defaultMinValue=getDefaultMinValue($(".search-intent").val(),$(".search-bhk").val());
+    var defaultMaxValue=getDefaultMaxValue($(".search-intent").val(),$(".search-bhk").val());
+    defaultRentParams="&min_inr="+defaultMinValue+"&max_inr="+defaultMaxValue;
     var defaultBedParams="&bed_rooms="+$(".search-bhk").val();
     var defaultHouseType="&house_type="+$(".search-apt-type").val();
 
     var url="https://www.commonfloor.com/listing-search?"+defaultSearchIntent+"&page=1&city="+cityList[selectedCityIndex].cfCityName+
-    "&use_pp=0&set_pp=0&fetch_max=1&number_of_children=2&page_size=20&polygon=1&mapBounds=";
+    "&use_pp=0&set_pp=0&fetch_max=1&number_of_children=2&page_size=20&polygon=1&physically_verified=1&mapBounds=";
     var ne=polygon.getBounds().getNorthEast();
     var sw=polygon.getBounds().getSouthWest();
     url+=sw.lat()+","+sw.lng()+","+ne.lat()+","+ne.lng();
@@ -184,33 +203,8 @@ function createLink (map) {
     var ne=bounds.getNorthEast();
     var sw=bounds.getSouthWest();
     var cityName=cityList[selectedCityIndex].cfCityName;
-    var minRange=$(".minrange").val().toUpperCase();
-    var maxRange=$(".maxrange").val().toUpperCase();
-    if($(".search-intent").val()=="sale"){
-        var defaultMinValue="2000000";
-        var defaultMaxValue="";        
-        if(minRange.match(isLakh)){
-            defaultMinValue=Number(minRange.replace("L",""))*100000;
-        }
-        if(minRange.match(isCrore)){
-         defaultMinValue=Number(minRange.replace("CR",""))*10000000;   
-        }
-        if(maxRange.match(isLakh)){
-            defaultMaxValue=Number(maxRange.replace("L",""))*100000
-        }
-        if(maxRange.match(isCrore)){
-         defaultMaxValue=Number(maxRange.replace("CR",""))*10000000;      
-        }
-    } else {
-        var defaultMinValue="10000";
-        var defaultMaxValue="25000";
-        if(minRange.match(isThousand)){
-            defaultMinValue=Number(minRange.replace("K",""))*1000;
-        }
-        if(maxRange.match(isThousand)){
-            defaultMaxValue=Number(maxRange.replace("K",""))*1000;
-        }
-    }
+    var defaultMinValue=getDefaultMinValue($(".search-intent").val(),$(".search-bhk").val());
+    var defaultMaxValue=getDefaultMaxValue($(".search-intent").val(),$(".search-bhk").val());
     var params={ 
         cityName: cityName,
         lat1: sw.lat(),
@@ -223,9 +217,7 @@ function createLink (map) {
         bedRooms: [$(".search-bhk").val()],
         houseTypes: $(".search-apt-type").val()
     };
-    console.log(params);
-    var link='/smart-search?qs='+JSON.stringify(params,null, 0);
-    console.log(link);
+    var link=host+'/smart-search?qs='+JSON.stringify(params,null, 0);
     var centerControl = new CenterControl(centerControlDiv, map, link);
     centerControlDiv.index = 1;
     map.controls[google.maps.ControlPosition.TOP_CENTER].clear();
@@ -267,7 +259,6 @@ function initialize() {
         var params=$('select.nlform-select.distance').map(function() {
          return { distance: $(this).val()};
         }).get();
-        console.log(params);
         locations.forEach(function(item, index){
             if(item) {                        
                 params[index].location={lat:item.lat(), lng:item.lng()};
@@ -285,7 +276,7 @@ function initialize() {
         }
         selectedCityIndex=filtered[0].cityIndex;
         ga('send', '_trackEvent','Where_House', 'click', JSON.stringify(filtered));                
-        $.post( "/process", { params: filtered})
+        $.post( host+"/process", { params: filtered})
           .done(function( data ) {
             if(data){                
                 $("html, body").animate({ scrollTop: $(document).height() }, 1000);
@@ -441,7 +432,7 @@ function searchInBounds() {
             defaultMaxValue=Number(maxRange.replace("K",""))*1000;
         }
     }  
-  $.post( "/location", { 
+  $.post( host+"/location", { 
     search_intent: $(".search-intent").val(),
     cityName: cityName,
     min_inr: defaultMinValue,

@@ -61,7 +61,7 @@ if (cluster.isMaster) {
 			    var defaultBedParams="&bed_rooms="+options.bedRooms;
 			    var defaultHouseType="&house_type="+options.houseTypes;			    
 			    var url="https://www.commonfloor.com/listing-search?"+defaultSearchIntent+"&page=1&city="+options.cityName+
-			    "&use_pp=0&set_pp=0&fetch_max=1&number_of_children=2&page_size=20&polygon=1&mapBounds=";
+			    "&use_pp=0&set_pp=0&fetch_max=1&number_of_children=2&page_size=30&physically_verified=1&polygon=1&mapBounds=";
 			    url+=options.lat1+","+options.lng1+","+options.lat2+","+options.lng2;
 			    url+=defaultRentParams;
 			    url+=defaultBedParams;
