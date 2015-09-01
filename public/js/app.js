@@ -236,6 +236,10 @@ function initialize() {
     var mapOptions = {
         center: new google.maps.LatLng(12.9539974,77.6268196),
         scrollwheel: false,
+        draggable: false, 
+        scrollwheel: false,
+        panControl: false,
+        streetViewControl: false,
         //disableDefaultUI: true,
         zoom: 12,
         minZoom:12,
