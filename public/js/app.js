@@ -228,11 +228,32 @@ function createLink (map) {
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
 }
 var map;
+function saveUserFilters (locations) {
+    Parse.initialize("6ZVMxs4v7FWwTBJ7RdSWIws8T0F2mfPVZ1gELmxZ", "YcWTu3cqBLiG1Cc8V2UymEhGphtATQZ5nZ2KPFj8");
+    var UserFilter = Parse.Object.extend("UserFilter");
+    var userFilter = new UserFilter();
+    userFilter.set("age",$(".age").val());
+    userFilter.set("gender",$(".gender").val());
+    userFilter.set("relationship",$(".relationship-status").val());
+    userFilter.set("livingWith",$(".living-with").val());
+    userFilter.set("intent",$(".search-intent").val());
+    userFilter.set("bhk",$(".search-bhk").val());
+    userFilter.set("city",$('#city').val());
+    userFilter.set("locations",locations);    
+    userFilter.save(null, {
+
+      success: function(userFilter) {
+        console.log("Done");
+      },
+      error: function(userFilter, error) {
+        console.log("Error"+error.message);
+      }
+    });
+}
 function initialize() {
     var styles = [{stylers:[{visibility:"off"}]},{featureType:"administrative",elementType:"geometry.stroke",stylers:[{visibility:"on"},{color:"#8f9190"},{weight:0.5}]},{featureType:"landscape.man_made",stylers:[{visibility:"off"}]},{featureType:"landscape",elementType:"geometry.fill",stylers:[{visibility:"on"},{color:"#4b4b4a"}]},{featureType:"administrative.country",elementType:"labels.text.fill",stylers:[{visibility:"on"},{color:"#dedede"}]},{featureType:"administrative.province",elementType:"labels.text.fill",stylers:[{visibility:"on"},{color:"#3d3e3d"}]},{featureType:"administrative.locality",elementType:"labels.text.fill",stylers:[{visibility:"on"},{color:"#cccccc"}]},{featureType:"administrative.locality",elementType:"labels.text.stroke",stylers:[{visibility:"off"}]},{featureType:"water",stylers:[{visibility:"on"},{color:"#27231f"}]},{featureType:"road",elementType:"labels.text.fill",stylers:[{visibility:"on"},{color:"#dddddd"}]},{featureType:"road.highway",elementType:"geometry.fill",stylers:[{visibility:"on"},{color:"#9b9b9b"},{weight:1.1}]},{featureType:"road.arterial",elementType:"geometry.fill",stylers:[{visibility:"on"},{weight:0.9},{color:"#a7a7a7"}]},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{visibility:"off"},{weight:0.5},{color:"#8f9190"}]},{featureType:"road.local",elementType:"geometry.fill",stylers:[{visibility:"on"},{color:"#8f9190"},{weight:0.5}]},{featureType:"road.arterial",elementType:"labels.icon",stylers:[{visibility:"on"},{invert_lightness:true}]},{featureType:"road.arterial",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"road.highway",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"road.highway",elementType:"labels.icon",stylers:[{visibility:"off"}]},{featureType:"administrative.land_parcel",stylers:[{visibility:"off"}]},{featureType:"administrative.neighborhood",stylers:[{visibility:"off"}]},{featureType:"water",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"road"}];
     var styledMap = new google.maps.StyledMapType(styles,
-    {name: "Styled Map"});
-
+    {name: "Styled Map"});    
     var mapOptions = {
         center: new google.maps.LatLng(12.9539974,77.6268196),
         scrollwheel: false,
@@ -286,7 +307,8 @@ function initialize() {
         ga('send', 'event','where_house', 'click', JSON.stringify(filtered));
         $.post( host+"/process", { params: filtered})
           .done(function( data ) {
-            if(data){                
+            saveUserFilters(filtered);
+            if(data){
                 $("html, body").animate({ scrollTop: $(document).height() }, 1000);
                 var features=map.data.addGeoJson(data);                        
                 map.data.forEach(function(feature) {
