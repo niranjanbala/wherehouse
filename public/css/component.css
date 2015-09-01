@@ -10,7 +10,7 @@
 /* general style for the form */
 .nl-form {
 	width: 100%;
-	font-size: 2.3em;
+	font-size: 1.7em;
 	line-height: 1.5;
 }
 
@@ -60,6 +60,9 @@
 	display: inline-block;
 	/*color: #ffe980;*/
 	color: #49CAA0;
+	color: black;
+  font-weight: bold;
+  font-size: 1.4em;
 	cursor: pointer;
 	border-bottom: 1px dashed #49CAA0;
 }
@@ -253,8 +256,8 @@ input:focus::-ms-input-placeholder {
 	text-transform: uppercase;
 	cursor: pointer;
 	position: relative;
-	background: #76C3BD;
-	color: #fff;
+	/*background: #49CAA0;*/
+	color: #49CAA0;;
 	/*padding: 0 1em 0 0;*/
 	font-size: 70%;
 	font-weight: bold;

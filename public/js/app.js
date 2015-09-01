@@ -265,13 +265,13 @@ function initialize() {
         zoom: 12,
         minZoom:12,
         maxZoom:16,
-        mapTypeControlOptions: {
+        /*mapTypeControlOptions: {
             mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
-        }
+        }*/
     };
     map = new google.maps.Map($('#map')[0], mapOptions);
-    map.mapTypes.set('map_style', styledMap);
-    map.setMapTypeId('map_style');    
+    //map.mapTypes.set('map_style', styledMap);
+    //map.setMapTypeId('map_style');    
     $('.controls.pac-input').each(function(index){
         locations.push(null);
         cityListSelected.push(null);
