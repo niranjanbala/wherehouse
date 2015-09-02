@@ -198,11 +198,11 @@ function setAutoCompleteListener(autocomplete, index){
     });
 }
 function createLink (map) {
-    var centerControlDiv = document.createElement('div');
+    //var centerControlDiv = document.createElement('div');
     //var link='/smart-search?qs=';
-    var att = document.createAttribute("class");       // Create a "class" attribute
-    att.value = "democlass";                           // Set the value of the class attribute
-    centerControlDiv.setAttributeNode(att);
+    //var att = document.createAttribute("class");       // Create a "class" attribute
+    //att.value = "democlass";                           // Set the value of the class attribute
+    //centerControlDiv.setAttributeNode(att);
     var bounds=polygon.getBounds();
     var ne=bounds.getNorthEast();
     var sw=bounds.getSouthWest();
@@ -222,10 +222,12 @@ function createLink (map) {
         houseTypes: $(".search-apt-type").val()
     };
     var link=host+'/smart-search?qs='+JSON.stringify(params,null, 0);
-    var centerControl = new CenterControl(centerControlDiv, map, link);
-    centerControlDiv.index = 1;
-    map.controls[google.maps.ControlPosition.TOP_CENTER].clear();
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+    $('.democlass a').attr('href', link);
+    $('.democlass a').attr('target','_blank');
+    //var centerControl = new CenterControl(centerControlDiv, map, link);
+    //centerControlDiv.index = 1;
+    //map.controls[google.maps.ControlPosition.TOP_CENTER].clear();
+    //map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
 }
 var map;
 function saveUserFilters (locations) {
