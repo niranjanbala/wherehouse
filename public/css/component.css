@@ -316,6 +316,8 @@ input:focus::-ms-input-placeholder {
     font-size: 70%;
     font-weight: bold;
     letter-spacing: 3px;
+    width: 60%;
+    margin-left: 20%;
 }
 .mapBoxA{
 	width: 100%;
@@ -352,31 +354,39 @@ input:focus::-ms-input-placeholder {
 }
 .pa{padding-left:40px; display:inline-block;font-size:41px;}
 
-.mapWrap{border: 2px solid; width:60%;margin:0 auto; height:500px;margin-bottom: 20px;left:20%;}
+.mapWrap{border: 2px solid; width:60%;margin:0 auto; height:400px;margin-bottom: 20px;left:20%;}
 .map{
 		width: 100%;
-		height:88%;
+		height:100%;
 }
 .mapFoot{text-align: center;width:60%; margin: 0 auto; margin-bottom: 20px; left:20%;}9
 .mapFoot a{color:#f68121;}
 .logoWrap{display: inline-block;}
 
 @media only screen and (min-width: 320px) and (max-width: 768px){
-
+.mapBoxA{
+	font-size: 20px;
+}
+.democlass{
+	width:100%;
+	margin: auto;
+}
 .mapWrap{
 	width:95%;
 	margin:0 auto;
 	left:0;
 	height: 350px;
-	    border: 4px solid;
+	border: 4px solid;
 }
 
+
 .pa{
+	display: inline-block;
+   width: 160px;
 	padding-left:0px;
-	 font-size: 32px;
+	 font-size: 24px;
     text-align: center;
     margin-top:15px;
-    display: block;
 }
 
 .nl-form .nl-submit{
@@ -390,8 +400,9 @@ input:focus::-ms-input-placeholder {
     padding: 17px;
 }
 .nl-form{
+	line-height: 1.45;
 	text-align: center;
-	font-size:28px;
+	font-size:20px;
 }
 
 .mapFoot{
@@ -399,11 +410,14 @@ input:focus::-ms-input-placeholder {
     width: 100%;
     padding: 10px 0px;
 }
+.nl-submit-wrap{
+	margin-top: 0;
+}
 .logo{
 	text-align: center;
 }
 .logoWrap{
-	display: block;
+	display: inline-block;
 }
 .head{    margin-bottom: 20px;}
 
